@@ -1,7 +1,7 @@
 import { Loader } from './Loader';
 import { useContext, useEffect } from 'react';
 import { PeopleContext } from '../store/PeopleContext';
-import { PeopleList } from './PeopleList';
+import { PeopleTable } from './PeopleTable';
 
 export const PeoplePage = () => {
   const { loader, handleGetList } = useContext(PeopleContext);
@@ -16,7 +16,7 @@ export const PeoplePage = () => {
 
       <div className="block">
         <div className="box table-container">
-          {loader ? <Loader /> : <PeopleList />}
+          {loader ? <Loader /> : <PeopleTable />}
         </div>
       </div>
     </>

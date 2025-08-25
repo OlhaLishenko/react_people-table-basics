@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { PeopleContext } from '../store/PeopleContext';
 import { PersonItem } from './PersonItem';
 
-export const PeopleList: React.FC = () => {
+export const PeopleTable: React.FC = () => {
   const { error, alarm, peopleList } = useContext(PeopleContext);
 
   return (
