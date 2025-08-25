@@ -1,40 +1,40 @@
+import { useLocation } from 'react-router-dom';
+import classNames from 'classnames';
+import { PersonLink } from './PersonLink';
+import { Person } from '../types';
 import { useContext } from 'react';
 import { PeopleContext } from '../store/PeopleContext';
-import { PersonItem } from './PersonItem';
 
-export const PeopleTable: React.FC = () => {
-  const { error, alarm, peopleList } = useContext(PeopleContext);
+type PeopleTableProps = {
+  person: Person;
+};
+
+export const PeopleTable: React.FC<PeopleTableProps> = ({ person }) => {
+  const { getPersonInfo } = useContext(PeopleContext);
+  const location = useLocation();
+  const currentPerson = getPersonInfo(person);
 
   return (
-    <>
-      {error ? (
-        <p data-cy="peopleLoadingError" className="has-text-danger">
-          Something went wrong
-        </p>
-      ) : alarm ? (
-        <p data-cy="noPeopleMessage">There are no people on the server</p>
-      ) : (
-        <table
-          data-cy="peopleTable"
-          className="table is-striped is-hoverable is-narrow is-fullwidth"
-        >
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Sex</th>
-              <th>Born</th>
-              <th>Died</th>
-              <th>Mother</th>
-              <th>Father</th>
-            </tr>
-          </thead>
-          <tbody>
-            {peopleList.map(person => (
-              <PersonItem key={person.name} person={person} />
-            ))}
-          </tbody>
-        </table>
-      )}
-    </>
+    <tr
+      data-cy="person"
+      className={classNames({
+        'has-background-warning':
+          location.pathname === `/people/${currentPerson.slug}`,
+      })}
+    >
+      <td>
+        <PersonLink person={currentPerson} />
+      </td>
+
+      <td>{person.sex}</td>
+      <td>{person.born}</td>
+      <td>{person.died}</td>
+      <td>
+        <PersonLink person={currentPerson.mother} />
+      </td>
+      <td>
+        <PersonLink person={currentPerson.father} />
+      </td>
+    </tr>
   );
 };

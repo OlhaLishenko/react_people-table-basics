@@ -12,6 +12,7 @@ type PeopleContextType = {
   alarm: boolean;
   setAlarm: React.Dispatch<React.SetStateAction<boolean>>;
   handleGetList: () => void;
+  getPersonInfo: (currentPerson: Person) => Person;
 };
 
 export const PeopleContext = React.createContext<PeopleContextType>({
@@ -24,6 +25,7 @@ export const PeopleContext = React.createContext<PeopleContextType>({
   alarm: false,
   setAlarm: () => {},
   handleGetList: () => {},
+  getPersonInfo: () => ({}) as Person,
 });
 
 export const PeopleContextProvider = ({
@@ -53,6 +55,18 @@ export const PeopleContextProvider = ({
     }
   }, []);
 
+  const getPersonInfo = useCallback((currentPerson: Person) => {
+    const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
+    const mother = peopleList.filter(
+      person => person.name === currentPerson.motherName,
+    )[0];
+    const father = peopleList.filter(
+      person => person.name === currentPerson.fatherName,
+    )[0];
+
+    return { ...currentPerson, slug, mother, father };
+  }, []);
+
   const value = {
     peopleList,
     setPeopleList,
@@ -63,6 +77,7 @@ export const PeopleContextProvider = ({
     alarm,
     setAlarm,
     handleGetList,
+    getPersonInfo,
   };
 
   return (

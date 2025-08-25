@@ -1,39 +1,29 @@
 import { Link } from 'react-router-dom';
-import { PeopleContext } from '../store/PeopleContext';
-import { useContext } from 'react';
 import classNames from 'classnames';
 import { Person } from '../types';
 
 type PersonLinkProps = {
-  name?: string | null;
+  person?: Person | null;
 };
 
-export const PersonLink: React.FC<PersonLinkProps> = ({ name }) => {
-  const { peopleList } = useContext(PeopleContext);
+export const PersonLink: React.FC<PersonLinkProps> = ({ person }) => {
+  // const { peopleList } = useContext(PeopleContext);
 
-  if (!name) {
+  if (!person) {
     return <span>-</span>;
   }
 
-  const currentPerson: Person = peopleList.filter(
-    person => person.name === name,
-  )[0];
-
-  if (!currentPerson) {
-    return <span>{name}</span>;
-  }
-
-  const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
+  // const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
 
   return (
     <span>
       <Link
-        to={`./${slug}`}
+        to={`./${person.slug}`}
         className={classNames({
-          'has-text-danger': currentPerson.sex === 'f',
+          'has-text-danger': person.sex === 'f',
         })}
       >
-        {currentPerson.name}
+        {person.name}
       </Link>
     </span>
   );
