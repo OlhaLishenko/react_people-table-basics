@@ -7,18 +7,14 @@ type PersonLinkProps = {
 };
 
 export const PersonLink: React.FC<PersonLinkProps> = ({ person }) => {
-  if (!person || !person.name || person.name.trim() === '') {
+  if (!person) {
     return <span>-</span>;
-  }
-
-  if (person && !person.slug) {
-    return <span>{person.name}</span>;
   }
 
   return (
     <span>
       <Link
-        to={`./${person.slug}`}
+        to={`/people/${person.slug}`}
         className={classNames({
           'has-text-danger': person.sex === 'f',
         })}

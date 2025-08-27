@@ -1,40 +1,55 @@
-import { useLocation } from 'react-router-dom';
-import classNames from 'classnames';
-import { PersonLink } from './PersonLink';
 import { Person } from '../types';
-import { useContext } from 'react';
-import { PeopleContext } from '../store/PeopleContext';
+import { PersonInfo } from './PersonInfo';
 
 type PeopleTableProps = {
-  person: Person;
+  peopleList: Person[];
+  slug?: string;
+  error: boolean;
+  alarm: boolean;
 };
 
-export const PeopleTable: React.FC<PeopleTableProps> = ({ person }) => {
-  const { getPersonInfo } = useContext(PeopleContext);
-  const location = useLocation();
-  const currentPerson = getPersonInfo(person);
-
+export const PeopleTable: React.FC<PeopleTableProps> = ({
+  peopleList,
+  slug,
+  error,
+  alarm,
+}) => {
   return (
-    <tr
-      data-cy="person"
-      className={classNames({
-        'has-background-warning':
-          location.pathname === `/people/${currentPerson.slug}`,
-      })}
-    >
-      <td>
-        <PersonLink person={currentPerson} />
-      </td>
-
-      <td>{person.sex}</td>
-      <td>{person.born}</td>
-      <td>{person.died}</td>
-      <td>
-        <PersonLink person={currentPerson.mother} />
-      </td>
-      <td>
-        <PersonLink person={currentPerson.father} />
-      </td>
-    </tr>
+    <>
+      {error ? (
+        <p data-cy="peopleLoadingError" className="has-text-danger">
+          Something went wrong
+        </p>
+      ) : alarm ? (
+        <p data-cy="noPeopleMessage">There are no people on the server</p>
+      ) : (
+        <table
+          data-cy="peopleTable"
+          className="table is-striped is-hoverable is-narrow is-fullwidth"
+        >
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Sex</th>
+              <th>Born</th>
+              <th>Died</th>
+              <th>Mother</th>
+              <th>Father</th>
+            </tr>
+          </thead>
+          <tbody>
+          {peopleList.map(person => (
+            <PersonInfo
+              key={person.name}
+              person={person}
+              selected={slug === person.slug}
+              mother={peopleList.filter(p => p.name === person.motherName)[0]}
+              father={peopleList.filter(p => p.name === person.fatherName)[0]}
+            />
+          ))}
+        </tbody>
+        </table>
+      )}
+    </>
   );
 };
