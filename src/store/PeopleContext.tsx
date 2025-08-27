@@ -55,17 +55,21 @@ export const PeopleContextProvider = ({
     }
   }, []);
 
-  const getPersonInfo = useCallback((currentPerson: Person) => {
-    const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
-    const mother = peopleList.filter(
-      person => person.name === currentPerson.motherName,
-    )[0];
-    const father = peopleList.filter(
-      person => person.name === currentPerson.fatherName,
-    )[0];
+  const getPersonInfo = useCallback(
+    (currentPerson: Person) => {
+      const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
+      const mother = peopleList.filter(
+        person => person.name === currentPerson.motherName,
+      )[0] || { name: currentPerson.motherName };
 
-    return { ...currentPerson, slug, mother, father };
-  }, []);
+      const father = peopleList.filter(
+        person => person.name === currentPerson.fatherName,
+      )[0] || { name: currentPerson.fatherName };
+
+      return { ...currentPerson, slug, mother, father };
+    },
+    [peopleList],
+  );
 
   const value = {
     peopleList,

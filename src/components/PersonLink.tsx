@@ -3,17 +3,17 @@ import classNames from 'classnames';
 import { Person } from '../types';
 
 type PersonLinkProps = {
-  person?: Person | null;
+  person?: Person;
 };
 
 export const PersonLink: React.FC<PersonLinkProps> = ({ person }) => {
-  // const { peopleList } = useContext(PeopleContext);
-
-  if (!person) {
+  if (!person || !person.name || person.name.trim() === '') {
     return <span>-</span>;
   }
 
-  // const slug = `${currentPerson.name.toLowerCase().split(' ').join('-')}-${currentPerson.born}`;
+  if (person && !person.slug) {
+    return <span>{person.name}</span>;
+  }
 
   return (
     <span>

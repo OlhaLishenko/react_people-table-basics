@@ -31,7 +31,7 @@ export const PeoplePage = () => {
                 >
                   <thead>
                     <tr>
-                      <th></th>
+                      <th>Name</th>
                       <th>Sex</th>
                       <th>Born</th>
                       <th>Died</th>

@@ -8,7 +8,6 @@ import {
 import { HomePage } from './components/HomePage';
 import { PeoplePage } from './components/PeoplePage';
 import { PeopleContextProvider } from './store/PeopleContext';
-// import { PersonLink } from './components/PersonLink';
 import { NotFoundPage } from './components/NotFoundPage';
 
 export const Root = () => {
@@ -19,8 +18,7 @@ export const Root = () => {
           <Route path="/" element={<App />}>
             <Route index element={<HomePage />} />
             <Route path="home" element={<Navigate to="/" replace />} />
-            <Route path="people">
-              <Route index element={<PeoplePage />} />
+            <Route path="people" element={<PeoplePage />}>
               <Route path=":slug" element={<PeoplePage />} />
             </Route>
             <Route path="*" element={<NotFoundPage />} />
